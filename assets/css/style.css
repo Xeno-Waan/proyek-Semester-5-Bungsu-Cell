@@ -1,0 +1,477 @@
+/* ==========================================================================
+   SPK Bungsu Cell — Design Tokens & Core Styles
+   Based on UI-GUIDELINE.md (v0.1.1)
+   Identity: Modern Futuristic SaaS with Forest Green & Golden Yellow
+   ========================================================================== */
+
+:root {
+  /* Color Palette Tokens */
+  --bungsu-forest-green: #0B3D2E;
+  --bungsu-forest-green-dark: #07271D;
+  --bungsu-forest-green-light: #155743;
+  --bungsu-forest-green-subtle: #E8F2ED;
+  
+  --bungsu-golden-yellow: #F2C94C;
+  --bungsu-golden-yellow-hover: #E0B739;
+  --bungsu-golden-yellow-subtle: #FEF9E7;
+  
+  --bungsu-soft-bg: #F7F9F7;
+  --bungsu-white: #FFFFFF;
+  --bungsu-dark-text: #17231D;
+  --bungsu-muted-text: #52645A;
+  --bungsu-border: #DCE5DF;
+  --bungsu-border-light: #EDF2EF;
+
+  /* Status Colors */
+  --bungsu-success: #198754;
+  --bungsu-warning: #D97706;
+  --bungsu-danger: #DC3545;
+  --bungsu-info: #0D6EFD;
+
+  /* Typography & Transitions */
+  --bungsu-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --bungsu-transition-speed: 0.2s;
+  --bungsu-shadow-sm: 0 1px 3px rgba(11, 61, 46, 0.06), 0 1px 2px rgba(11, 61, 46, 0.04);
+  --bungsu-shadow-md: 0 4px 12px rgba(11, 61, 46, 0.08), 0 2px 4px rgba(11, 61, 46, 0.04);
+  --bungsu-shadow-lg: 0 12px 24px -4px rgba(11, 61, 46, 0.12), 0 4px 8px -2px rgba(11, 61, 46, 0.06);
+}
+
+/* Base Document Reset & Defaults */
+html, body {
+  font-family: var(--bungsu-font-family);
+  background-color: var(--bungsu-soft-bg);
+  color: var(--bungsu-dark-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--bungsu-dark-text);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--bungsu-muted-text);
+}
+
+a {
+  color: var(--bungsu-forest-green);
+  text-decoration: none;
+  transition: color var(--bungsu-transition-speed) ease;
+}
+
+a:hover {
+  color: var(--bungsu-forest-green-light);
+}
+
+/* ==========================================================================
+   Navigation Bar (Public & Admin)
+   ========================================================================== */
+
+.navbar-bungsu {
+  background-color: var(--bungsu-forest-green);
+  border-bottom: 2px solid var(--bungsu-golden-yellow);
+  padding: 0.85rem 0;
+  box-shadow: var(--bungsu-shadow-md);
+}
+
+.navbar-bungsu .navbar-brand {
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.navbar-bungsu .brand-badge {
+  background-color: var(--bungsu-golden-yellow);
+  color: var(--bungsu-forest-green-dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.navbar-bungsu .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  transition: all var(--bungsu-transition-speed) ease;
+}
+
+.navbar-bungsu .nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-bungsu .nav-link.active {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.16);
+  font-weight: 600;
+}
+
+.navbar-bungsu .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-bungsu .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* ==========================================================================
+   Button Components
+   ========================================================================== */
+
+.btn-bungsu-primary {
+  background-color: var(--bungsu-forest-green);
+  color: #FFFFFF;
+  border: 1px solid var(--bungsu-forest-green);
+  font-weight: 600;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  transition: all var(--bungsu-transition-speed) ease;
+  box-shadow: var(--bungsu-shadow-sm);
+}
+
+.btn-bungsu-primary:hover,
+.btn-bungsu-primary:focus {
+  background-color: var(--bungsu-forest-green-dark);
+  border-color: var(--bungsu-forest-green-dark);
+  color: #FFFFFF;
+  box-shadow: var(--bungsu-shadow-md);
+}
+
+.btn-bungsu-accent {
+  background-color: var(--bungsu-golden-yellow);
+  color: var(--bungsu-forest-green-dark);
+  border: 1px solid var(--bungsu-golden-yellow);
+  font-weight: 700;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  transition: all var(--bungsu-transition-speed) ease;
+  box-shadow: var(--bungsu-shadow-sm);
+}
+
+.btn-bungsu-accent:hover,
+.btn-bungsu-accent:focus {
+  background-color: var(--bungsu-golden-yellow-hover);
+  border-color: var(--bungsu-golden-yellow-hover);
+  color: var(--bungsu-forest-green-dark);
+  box-shadow: var(--bungsu-shadow-md);
+}
+
+.btn-bungsu-outline {
+  background-color: transparent;
+  color: var(--bungsu-forest-green);
+  border: 1px solid var(--bungsu-forest-green);
+  font-weight: 600;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  transition: all var(--bungsu-transition-speed) ease;
+}
+
+.btn-bungsu-outline:hover,
+.btn-bungsu-outline:focus {
+  background-color: var(--bungsu-forest-green);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Card & Section Components
+   ========================================================================== */
+
+.bungsu-card {
+  background-color: var(--bungsu-white);
+  border: 1px solid var(--bungsu-border);
+  border-radius: 12px;
+  box-shadow: var(--bungsu-shadow-sm);
+  transition: transform var(--bungsu-transition-speed) ease, box-shadow var(--bungsu-transition-speed) ease;
+}
+
+.bungsu-card:hover {
+  box-shadow: var(--bungsu-shadow-md);
+}
+
+.bungsu-card-header {
+  padding: 1.25rem 1.5rem;
+  background-color: transparent;
+  border-bottom: 1px solid var(--bungsu-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bungsu-card-body {
+  padding: 1.5rem;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--bungsu-forest-green-dark) 0%, var(--bungsu-forest-green) 100%);
+  color: #FFFFFF;
+  padding: 4.5rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(242, 201, 78, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-section h1 {
+  color: #FFFFFF;
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-section p.lead {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.15rem;
+  max-width: 640px;
+}
+
+/* Feature Badge */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  color: var(--bungsu-golden-yellow);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   Empty States & Alerts
+   ========================================================================== */
+
+.empty-state-box {
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  background-color: var(--bungsu-white);
+  border: 2px dashed var(--bungsu-border);
+  border-radius: 12px;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  color: var(--bungsu-muted-text);
+  margin-bottom: 1rem;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--bungsu-dark-text);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-desc {
+  color: var(--bungsu-muted-text);
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Badges */
+.badge-bungsu-benefit {
+  background-color: var(--bungsu-forest-green-subtle);
+  color: var(--bungsu-forest-green);
+  border: 1px solid rgba(11, 61, 46, 0.2);
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+.badge-bungsu-cost {
+  background-color: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   Admin Layout & Sidebar
+   ========================================================================== */
+
+.admin-wrapper {
+  display: flex;
+  min-height: calc(100vh - 72px);
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--bungsu-white);
+  border-right: 1px solid var(--bungsu-border);
+  padding: 1.5rem 1rem;
+  flex-shrink: 0;
+}
+
+.admin-sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar-nav .nav-item {
+  margin-bottom: 0.35rem;
+}
+
+.admin-sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  color: var(--bungsu-muted-text);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all var(--bungsu-transition-speed) ease;
+}
+
+.admin-sidebar-nav .nav-link:hover {
+  color: var(--bungsu-forest-green);
+  background-color: var(--bungsu-forest-green-subtle);
+}
+
+.admin-sidebar-nav .nav-link.active {
+  color: #FFFFFF;
+  background-color: var(--bungsu-forest-green);
+}
+
+.admin-content {
+  flex: 1 1 auto;
+  padding: 2rem;
+  background-color: var(--bungsu-soft-bg);
+  overflow-y: auto;
+}
+
+.admin-stat-card {
+  background: var(--bungsu-white);
+  border: 1px solid var(--bungsu-border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: var(--bungsu-shadow-sm);
+}
+
+.admin-stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: var(--bungsu-forest-green-subtle);
+  color: var(--bungsu-forest-green);
+}
+
+.admin-stat-val {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--bungsu-dark-text);
+  line-height: 1;
+}
+
+.admin-stat-label {
+  font-size: 0.85rem;
+  color: var(--bungsu-muted-text);
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   Footer Component
+   ========================================================================== */
+
+.footer-bungsu {
+  background-color: var(--bungsu-forest-green-dark);
+  color: rgba(255, 255, 255, 0.75);
+  padding: 3rem 0 1.5rem;
+  border-top: 3px solid var(--bungsu-golden-yellow);
+  font-size: 0.9rem;
+}
+
+.footer-bungsu h5 {
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.footer-bungsu a {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.footer-bungsu a:hover {
+  color: var(--bungsu-golden-yellow);
+}
+
+.footer-bottom {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.82rem;
+}
+
+/* ==========================================================================
+   Print Stylesheet
+   ========================================================================== */
+
+@media print {
+  .navbar-bungsu,
+  .admin-sidebar,
+  .footer-bungsu,
+  .btn,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .admin-wrapper {
+    display: block !important;
+  }
+
+  .admin-content {
+    padding: 0 !important;
+    background-color: transparent !important;
+  }
+
+  .bungsu-card {
+    border: 1px solid #000000 !important;
+    box-shadow: none !important;
+  }
+}

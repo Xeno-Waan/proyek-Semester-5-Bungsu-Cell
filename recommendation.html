@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekomendasi SPK SAW — SPK Bungsu Cell</title>
+  <meta name="description" content="Hitung rekomendasi smartphone terbaik menggunakan metode Simple Additive Weighting (SAW) sesuai preferensi dan anggaran Anda.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Bungsu Cell Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-bungsu sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-phone-vibrate text-warning"></i>
+        <span>Bungsu Cell</span>
+        <span class="brand-badge">SPK SAW</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPublic" aria-controls="navbarPublic" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarPublic">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html"><i class="bi bi-house-door me-1"></i> Beranda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="catalog.html"><i class="bi bi-grid me-1"></i> Katalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="recommendation.html"><i class="bi bi-lightning-charge me-1"></i> Rekomendasi SPK</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="compare.html"><i class="bi bi-arrow-left-right me-1"></i> Bandingkan</a>
+          </li>
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-bungsu-accent btn-sm" href="admin/index.html"><i class="bi bi-shield-lock me-1"></i> Panel Admin</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="bg-white border-bottom py-4">
+    <div class="container">
+      <h1 class="h3 fw-bold mb-1">Rekomendasi Pemilihan Smartphone</h1>
+      <p class="text-muted small mb-0">Tentukan batas anggaran dan bobot preferensi kriteria Anda untuk menghitung peringkat rekomendasi dengan metode SAW.</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-4">
+    <div class="container">
+      <div class="row g-4">
+        
+        <!-- Left Column: Preference & Budget Form -->
+        <div class="col-lg-5">
+          <div class="bungsu-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h5 fw-bold mb-0"><i class="bi bi-sliders me-2 text-success"></i>Form Preferensi</h2>
+              <button type="button" class="btn btn-link btn-sm text-decoration-none p-0 text-muted" id="btnResetWeights">
+                Reset Bobot Default
+              </button>
+            </div>
+
+            <form id="sawPreferenceForm">
+              <!-- Budget Filter -->
+              <div class="mb-4">
+                <label for="budgetInput" class="form-label fw-bold text-dark mb-1">
+                  Batas Anggaran Maksimal (Rp)
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white fw-bold">Rp</span>
+                  <input type="number" class="form-control" id="budgetInput" placeholder="Misal: 4000000" min="0" step="50000" required>
+                </div>
+                <div class="form-text small">
+                  <i class="bi bi-info-circle me-1"></i> Anggaran adalah <strong>filter kelayakan</strong>. Produk di atas anggaran tidak akan dihitung.
+                </div>
+              </div>
+
+              <hr class="my-3">
+
+              <!-- Criteria Weights -->
+              <h3 class="h6 fw-bold mb-2">Bobot Prioritas Kriteria (Total Harus 100%)</h3>
+              <p class="text-muted small mb-3">Atur persentase bobot sesuai prioritas kebutuhan Anda:</p>
+
+              <!-- Total Weight Badge -->
+              <div id="weightTotalIndicator" class="alert alert-secondary py-2 px-3 small d-flex justify-content-between align-items-center mb-3">
+                <span>Total Bobot Saat Ini:</span>
+                <span class="fw-bold" id="totalWeightValue">100%</span>
+              </div>
+
+              <!-- C1: Harga (Cost) -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightPrice" class="form-label small fw-semibold mb-0">
+                    Harga Smartphone <span class="badge-bungsu-cost ms-1">Cost</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valPrice">20%</span>
+                </div>
+                <input type="range" class="form-range" id="weightPrice" min="0" max="100" value="20" step="5">
+              </div>
+
+              <!-- C2: RAM (Benefit) -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightRam" class="form-label small fw-semibold mb-0">
+                    Kapasitas RAM <span class="badge-bungsu-benefit ms-1">Benefit</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valRam">15%</span>
+                </div>
+                <input type="range" class="form-range" id="weightRam" min="0" max="100" value="15" step="5">
+              </div>
+
+              <!-- C3: Penyimpanan Internal (Benefit) -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightStorage" class="form-label small fw-semibold mb-0">
+                    Memori Internal (ROM) <span class="badge-bungsu-benefit ms-1">Benefit</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valStorage">15%</span>
+                </div>
+                <input type="range" class="form-range" id="weightStorage" min="0" max="100" value="15" step="5">
+              </div>
+
+              <!-- C4: Performa Chipset (Benefit) -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightChipset" class="form-label small fw-semibold mb-0">
+                    Performa Chipset <span class="badge-bungsu-benefit ms-1">Benefit</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valChipset">15%</span>
+                </div>
+                <input type="range" class="form-range" id="weightChipset" min="0" max="100" value="15" step="5">
+              </div>
+
+              <!-- C5: Baterai (Benefit) -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightBattery" class="form-label small fw-semibold mb-0">
+                    Kapasitas Baterai <span class="badge-bungsu-benefit ms-1">Benefit</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valBattery">15%</span>
+                </div>
+                <input type="range" class="form-range" id="weightBattery" min="0" max="100" value="15" step="5">
+              </div>
+
+              <!-- C6: Kamera (Benefit) -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightCamera" class="form-label small fw-semibold mb-0">
+                    Kualitas Kamera <span class="badge-bungsu-benefit ms-1">Benefit</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valCamera">10%</span>
+                </div>
+                <input type="range" class="form-range" id="weightCamera" min="0" max="100" value="10" step="5">
+              </div>
+
+              <!-- C7: Kualitas Layar (Benefit) -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="weightScreen" class="form-label small fw-semibold mb-0">
+                    Kualitas Layar <span class="badge-bungsu-benefit ms-1">Benefit</span>
+                  </label>
+                  <span class="small fw-bold text-dark" id="valScreen">10%</span>
+                </div>
+                <input type="range" class="form-range" id="weightScreen" min="0" max="100" value="10" step="5">
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-bungsu-accent w-100 fw-bold" id="btnCalculateSaw">
+                <i class="bi bi-calculator me-1"></i> Hitung Rekomendasi SAW
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Column: Recommendation Results -->
+        <div class="col-lg-7">
+          <div class="bungsu-card p-4">
+            <h2 class="h5 fw-bold mb-3"><i class="bi bi-trophy me-2 text-warning"></i>Hasil Rekomendasi SAW</h2>
+            
+            <!-- Result Container -->
+            <div id="recommendationResultsContainer">
+              <div class="empty-state-box">
+                <i class="bi bi-cpu empty-state-icon"></i>
+                <h3 class="empty-state-title">Hasil Rekomendasi Belum Dihitung</h3>
+                <p class="empty-state-desc">
+                  Masukkan batas anggaran maksimal dan atur bobot preferensi Anda di formulir sebelah kiri, kemudian klik <strong>"Hitung Rekomendasi SAW"</strong>.
+                </p>
+                <div class="small text-muted p-2 rounded bg-light border">
+                  <i class="bi bi-shield-check text-success me-1"></i> Engine SAW menerapkan normalisasi benefit/cost dan tie-break deterministik.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-bungsu mt-auto">
+    <div class="container text-center text-white-50 small">
+      &copy; 2026 Bungsu Cell. Hak Cipta Dilindungi. Sistem Pendukung Keputusan Smartphone.
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Data Services & Repositories -->
+  <script src="assets/js/data/storage-service.js"></script>
+  <script src="assets/js/data/criteria-schema.js"></script>
+  <script src="assets/js/data/smartphone-schema.js"></script>
+  <!-- SAW Engine -->
+  <script src="assets/js/saw/saw-engine.js"></script>
+  <!-- Modules -->
+  <script src="assets/js/modules/recommendation-ui.js"></script>
+  <!-- App Core JS -->
+  <script src="assets/js/core/app.js"></script>
+</body>
+</html>

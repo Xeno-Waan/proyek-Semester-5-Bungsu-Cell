@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Runner — SPK Bungsu Cell</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-light">
+
+  <div class="container py-5">
+    <div class="bungsu-card p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h1 class="h4 fw-bold mb-1">Test Runner Otomatis — SPK Bungsu Cell</h1>
+          <p class="text-muted small mb-0">Pengujian unit tanpa framework eksternal untuk Phase B (Data, Skema, Persistensi, dan Penanganan Error).</p>
+        </div>
+        <button class="btn btn-bungsu-primary btn-sm" id="btnRunTests">
+          <i class="bi bi-play-fill me-1"></i> Jalankan Ulang Semua Tes
+        </button>
+      </div>
+
+      <div id="testSummaryAlert" class="alert alert-secondary py-2 px-3 small mb-3">
+        Status: Menunggu eksekusi pengujian...
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm align-middle bg-white mb-0">
+          <thead class="table-light small">
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>Deskripsi Pengujian</th>
+              <th style="width: 120px;" class="text-center">Status</th>
+              <th>Detail / Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="testResultsBody">
+            <tr>
+              <td colspan="4" class="text-center py-3 text-muted">Memuat pengujian...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="../admin/index.html" class="btn btn-bungsu-outline btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Kembali ke Panel Admin
+      </a>
+    </div>
+  </div>
+
+  <!-- Include App & Data Scripts -->
+  <script src="../assets/js/data/storage-service.js"></script>
+  <script src="../assets/js/data/criteria-schema.js"></script>
+  <script src="../assets/js/data/smartphone-schema.js"></script>
+  <script src="../assets/js/saw/saw-engine.js"></script>
+  <script src="../assets/js/modules/catalog.js"></script>
+  <script src="../assets/js/modules/compare.js"></script>
+  <script src="../assets/js/modules/admin-smartphones.js"></script>
+  <script src="../assets/js/modules/admin-criteria.js"></script>
+  <script src="../assets/js/modules/admin-reports.js"></script>
+  <!-- Test Scripts -->
+  <script src="data-tests.js"></script>
+  <script src="catalog-tests.js"></script>
+  <script src="saw-tests.js"></script>
+  <script src="compare-tests.js"></script>
+  <script src="admin-tests.js"></script>
+  <script src="report-tests.js"></script>
+  <script src="integration-tests.js"></script>
+
+  <script>
+    async function executeAndRender() {
+      const tbody = document.getElementById('testResultsBody');
+      const summary = document.getElementById('testSummaryAlert');
+      
+      tbody.innerHTML = '<tr><td colspan="4" class="text-center py-3 text-muted">Menjalankan pengujian...</td></tr>';
+      
+      const dataResults = await DataTests.runAll();
+      const catalogResults = await CatalogTests.runAll();
+      const sawResults = await SawTests.runAll();
+      const compareResults = await CompareTests.runAll();
+      const adminResults = await AdminTests.runAll();
+      const reportResults = await ReportTests.runAll();
+      const integrationResults = await IntegrationTests.runAll();
+      const results = [
+        ...dataResults, 
+        ...catalogResults, 
+        ...sawResults, 
+        ...compareResults, 
+        ...adminResults, 
+        ...reportResults,
+        ...integrationResults
+      ];
+      tbody.innerHTML = '';
+
+      let passCount = 0;
+      results.forEach((r, idx) => {
+        if (r.passed) passCount++;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="text-center small">${idx + 1}</td>
+          <td class="small fw-semibold">${r.desc}</td>
+          <td class="text-center">
+            ${r.passed 
+              ? '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>LULUS</span>' 
+              : '<span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>GAGAL</span>'}
+          </td>
+          <td class="small text-muted">${r.details || (r.passed ? 'Berhasil sesuai spesifikasi' : 'Terjadi kegagalan')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      if (passCount === results.length) {
+        summary.className = 'alert alert-success py-2 px-3 small mb-3 fw-bold';
+        summary.innerHTML = `<i class="bi bi-check-all me-1 fs-5 align-middle"></i> Seluruh ${results.length} pengujian berhasil (100% LULUS).`;
+      } else {
+        summary.className = 'alert alert-danger py-2 px-3 small mb-3 fw-bold';
+        summary.innerHTML = `<i class="bi bi-exclamation-octagon me-1 fs-5 align-middle"></i> ${results.length - passCount} dari ${results.length} pengujian gagal.`;
+      }
+    }
+
+    document.getElementById('btnRunTests').addEventListener('click', executeAndRender);
+    document.addEventListener('DOMContentLoaded', executeAndRender);
+  </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Kriteria &amp; Bobot — Admin Bungsu Cell</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Bungsu Cell Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <!-- Top Admin Navbar -->
+  <nav class="navbar navbar-bungsu sticky-top py-2">
+    <div class="container-fluid px-3 px-md-4">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-shield-lock-fill text-warning"></i>
+        <span>Bungsu Cell</span>
+        <span class="brand-badge">ADMIN PANEL</span>
+      </a>
+      <div class="d-flex align-items-center gap-2">
+        <a href="../index.html" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Ke Halaman Publik
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-wrapper">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="small fw-bold text-uppercase text-muted px-3 mb-2">Menu Utama</div>
+      <ul class="admin-sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">
+            <i class="bi bi-speedometer2"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="smartphones.html">
+            <i class="bi bi-phone"></i> Data Smartphone
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="criteria.html">
+            <i class="bi bi-sliders"></i> Kriteria &amp; Bobot
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="reports.html">
+            <i class="bi bi-file-earmark-bar-graph"></i> Laporan
+          </a>
+        </li>
+      </ul>
+
+      <hr class="my-3">
+
+      <div class="small fw-bold text-uppercase text-muted px-3 mb-2">Tautan Cepat</div>
+      <ul class="admin-sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="../catalog.html">
+            <i class="bi bi-grid"></i> Buka Katalog
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../recommendation.html">
+            <i class="bi bi-calculator"></i> Buka Rekomendasi
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Admin Main Content -->
+    <main class="admin-content">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+          <h1 class="h3 fw-bold mb-1">Manajemen Prioritas &amp; Bobot Kriteria (Metode ROC)</h1>
+          <p class="text-muted small mb-0">Atur urutan kepentingan kriteria toko. Sistem otomatis menghitung bobot menggunakan metode Rank Order Centroid (ROC) untuk dipakai pada perankingan SAW.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm" id="btnResetDefaultWeights">
+            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset ke Default Toko
+          </button>
+          <button class="btn btn-bungsu-accent btn-sm" id="btnEditDefaultWeights">
+            <i class="bi bi-sort-numeric-down me-1"></i> Atur Urutan Prioritas (ROC)
+          </button>
+        </div>
+      </div>
+
+      <!-- Weight Status Alert -->
+      <div id="criteriaStatusAlert" class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3 mb-4" role="alert">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-check-circle-fill fs-5 text-success"></i>
+          <div><strong>Total Bobot Kriteria ROC: 100% (1.0000)</strong> — Dihitung otomatis dari urutan prioritas kriteria. Siap digunakan untuk normalisasi SAW.</div>
+        </div>
+        <span class="badge bg-success">Status Valid</span>
+      </div>
+
+      <!-- Criteria Table -->
+      <div class="bungsu-card overflow-hidden mb-4">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr class="small text-muted text-uppercase">
+                <th scope="col" class="text-center" style="width: 90px;">Prioritas</th>
+                <th scope="col" style="width: 70px;">Kode</th>
+                <th scope="col">Nama Kriteria</th>
+                <th scope="col">Sifat (Tipe)</th>
+                <th scope="col">Satuan / Format</th>
+                <th scope="col">Bobot ROC (%)</th>
+                <th scope="col">Metode Penilaian</th>
+              </tr>
+            </thead>
+            <tbody id="criteriaTableBody">
+              <tr>
+                <td class="text-center"><span class="badge bg-warning text-dark fw-bold">#1</span></td>
+                <td class="fw-bold">C1</td>
+                <td>Harga Smartphone</td>
+                <td><span class="badge-bungsu-cost">Cost</span></td>
+                <td>Rupiah (IDR)</td>
+                <td class="fw-bold">37.04% <span class="small text-muted">(0.3704)</span></td>
+                <td>Nilai Minimum / Nilai Alternatif</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="badge bg-success">#2</span></td>
+                <td class="fw-bold">C2</td>
+                <td>Kapasitas RAM</td>
+                <td><span class="badge-bungsu-benefit">Benefit</span></td>
+                <td>Gigabyte (GB)</td>
+                <td class="fw-bold">22.76% <span class="small text-muted">(0.2276)</span></td>
+                <td>Nilai Alternatif / Nilai Maksimum</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="badge bg-success">#3</span></td>
+                <td class="fw-bold">C3</td>
+                <td>Penyimpanan Internal (ROM)</td>
+                <td><span class="badge-bungsu-benefit">Benefit</span></td>
+                <td>Gigabyte (GB)</td>
+                <td class="fw-bold">15.61% <span class="small text-muted">(0.1561)</span></td>
+                <td>Nilai Alternatif / Nilai Maksimum</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="badge bg-secondary">#4</span></td>
+                <td class="fw-bold">C4</td>
+                <td>Performa Chipset</td>
+                <td><span class="badge-bungsu-benefit">Benefit</span></td>
+                <td>Skor Rubrik</td>
+                <td class="fw-bold">10.85% <span class="small text-muted">(0.1085)</span></td>
+                <td>Evaluasi Rubrik Terstandar</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="badge bg-secondary">#5</span></td>
+                <td class="fw-bold">C5</td>
+                <td>Kapasitas Baterai</td>
+                <td><span class="badge-bungsu-benefit">Benefit</span></td>
+                <td>Miliampere-hour (mAh)</td>
+                <td class="fw-bold">7.28% <span class="small text-muted">(0.0728)</span></td>
+                <td>Nilai Alternatif / Nilai Maksimum</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="badge bg-secondary">#6</span></td>
+                <td class="fw-bold">C6</td>
+                <td>Kualitas Kamera</td>
+                <td><span class="badge-bungsu-benefit">Benefit</span></td>
+                <td>Skor Rubrik</td>
+                <td class="fw-bold">4.42% <span class="small text-muted">(0.0442)</span></td>
+                <td>Evaluasi Rubrik Terstandar</td>
+              </tr>
+              <tr>
+                <td class="text-center"><span class="badge bg-secondary">#7</span></td>
+                <td class="fw-bold">C7</td>
+                <td>Kualitas Layar</td>
+                <td><span class="badge-bungsu-benefit">Benefit</span></td>
+                <td>Skor Rubrik</td>
+                <td class="fw-bold">2.04% <span class="small text-muted">(0.0204)</span></td>
+                <td>Evaluasi Rubrik Terstandar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ROC & Rubric Guidelines Note -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="bungsu-card p-4 h-100">
+            <h2 class="h6 fw-bold mb-2"><i class="bi bi-calculator-fill text-success me-2"></i>Mekanisme Pembobotan ROC (Rank Order Centroid)</h2>
+            <p class="small text-muted mb-2">
+              Admin tidak perlu menghitung persentase secara manual. Cukup tentukan urutan kriteria dari yang paling penting (peringkat 1) sampai paling tidak penting (peringkat 7).
+            </p>
+            <p class="small text-muted mb-0">
+              Rumus: <code>w<sub>j</sub> = (1/m) &times; &Sigma;<sub>k=j..m</sub> (1/k)</code>. Metode ini menjamin bobot terdistribusi proporsional, obyektif, dan totalnya selalu tepat 100%.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bungsu-card p-4 h-100">
+            <h2 class="h6 fw-bold mb-2"><i class="bi bi-info-circle-fill text-primary me-2"></i>Ketentuan Penilaian Rubrik Kualitatif (SOT Bagian 5)</h2>
+            <p class="small text-muted mb-0">
+              Untuk kriteria <strong>Performa Chipset</strong>, <strong>Kualitas Kamera</strong>, dan <strong>Kualitas Layar</strong>, sistem menggunakan skor evaluasi berdasarkan rubrik konsisten yang disepakati pemilik toko, bukan menyimpulkan kualitas hanya dari satu angka mentah (seperti besaran Megapixel) yang belum tentu mewakili kualitas secara keseluruhan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Data Services & Repositories -->
+  <script src="../assets/js/data/storage-service.js"></script>
+  <script src="../assets/js/data/criteria-schema.js"></script>
+  <script src="../assets/js/data/smartphone-schema.js"></script>
+  <!-- Admin Modules -->
+  <script src="../assets/js/modules/admin-criteria.js"></script>
+  <!-- App Core JS -->
+  <script src="../assets/js/core/app.js"></script>
+</body>
+</html>
