@@ -1,0 +1,19 @@
+{
+  "name": "spk-bungsu-cell",
+  "version": "0.2.0",
+  "description": "Sistem Pendukung Keputusan Pemilihan Smartphone Berbasis Web menggunakan Metode ROC-SAW pada Bungsu Cell",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/run-node-tests.js",
+    "watch-git": "node scripts/auto-git-push.js"
+  },
+  "keywords": [
+    "spk",
+    "saw",
+    "roc",
+    "decision-support-system"
+  ],
+  "author": "Xeno-Waan",
+  "license": "ISC"
+}
